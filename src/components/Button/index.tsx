@@ -1,5 +1,5 @@
 interface ButtonProps {
-  handleActionUser: () => void
+  handleActionUser?: () => void
   value: string | number
   buttonType?: 'button' | 'submit' | 'reset' | undefined
 }
