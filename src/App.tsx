@@ -15,6 +15,12 @@ const createFormSchema = z.object({
     .string()
     .min(1, 'O e-mail é obrigatório')
     .email('O formato de e-mail é inválido.'),
+  nameCompany: z.string().min(1, 'Digite o nome da sua empresa.'),
+  numEmployees: z.coerce.number().min(1, 'Digite a quantidade de funcionários'),
+  products: z
+    .string()
+    .min(10, 'Digite no mínimo 10 caracteres')
+    .max(360, 'Limite de até 360 caracteres'),
 })
 
 type CreateUseFormData = z.infer<typeof createFormSchema>
@@ -102,21 +108,84 @@ function App() {
         >
           <div className="flex flex-col gap-2">
             <Input
-              placeholder="Digite o email"
-              id="email"
-              register={register('email')}
-              error={errors.email?.message}
-              type="email"
+              placeholder="Nome da empresa"
+              id="company"
+              register={register('nameCompany')}
+              error={errors.nameCompany?.message}
+              type="text"
             />
           </div>
           <div className="flex flex-col gap-2">
             <Input
-              id="password"
-              placeholder="Digite a senha"
-              register={register('password')}
-              type="password"
-              error={errors.password?.message}
+              id="employees"
+              placeholder="Número de funcionários"
+              register={register('numEmployees')}
+              type="number"
+              error={errors.numEmployees?.message}
             />
+          </div>
+          <div className="flex flex-col gap-2">
+            <textarea
+              placeholder="Fale um pouco sobre seus produtos ou serviços"
+              className="w-full h-[200px] border-[3px] border-[#2E0249]/30 rounded-lg bg-transparent focus:border-[#633BBC] focus:placeholder:text-[#8257E5] focus:outline-none p-2 mt-6 resize-none"
+              {...register('products')}
+            />
+            {errors.products?.message && (
+              <span className="text-red-500">{errors.products.message}</span>
+            )}
+          </div>
+
+          <div className=" flex items-center justify-between gap-12 mt-4 ">
+            <button
+              type="submit"
+              className="bg-emerald-500 font-semibold text-white rounded p-2 w-48"
+              onClick={handlePrevStep}
+            >
+              Voltar
+            </button>
+            <button
+              type="submit"
+              className="bg-emerald-500 font-semibold text-white rounded p-2 w-48"
+              onClick={handleNextStep}
+            >
+              Enviar
+            </button>
+          </div>
+          <pre>{output}</pre>
+        </form>
+      )}
+      {step === 3 && (
+        <form
+          className="flex flex-col gap-4 w-96"
+          onSubmit={handleSubmit(createUser)}
+        >
+          <div className="flex flex-col gap-2">
+            <Input
+              placeholder="Nome da empresa"
+              id="company"
+              register={register('nameCompany')}
+              error={errors.nameCompany?.message}
+              type="text"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input
+              id="employees"
+              placeholder="Número de funcionários"
+              register={register('numEmployees')}
+              type="number"
+              error={errors.numEmployees?.message}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <textarea
+              placeholder="Fale um pouco sobre seus produtos ou serviços"
+              className="w-full h-[200px] border-[3px] border-[#2E0249]/30 rounded-lg bg-transparent focus:border-[#633BBC] focus:placeholder:text-[#8257E5] focus:outline-none p-2 mt-6 resize-none"
+              {...register('products')}
+            />
+            {errors.products?.message && (
+              <span className="text-red-500">{errors.products.message}</span>
+            )}
           </div>
 
           <div className=" flex items-center justify-between gap-12 mt-4 ">
